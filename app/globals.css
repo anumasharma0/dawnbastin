@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ar-bg: #0A3A60;
+  --ar-bg-deep: #062C4A;
+  --ar-sidebar: #0A3558;
+  --ar-card: #0D4775;
+  --ar-card-2: #0A3D66;
+  --ar-active: #0F4A7A;
+  --ar-border: #1B5A8A;
+  --ar-border-strong: #2A6FA6;
+  --ar-primary: #17A2E8;
+  --ar-primary-soft: #1A6FAE;
+  --ar-accent: #4FC3FF;
+  --ar-cyan: #1FB8F0;
+  --ar-warn: #F2C94C;
+  --ar-muted: #9CC4E4;
+  --ar-muted-2: #6FA3C9;
+
+  /* Landing-page-only tokens (components/landing/*, app/page.tsx) — see
+     components/landing/DESIGN.md. Deliberately separate from --ar-*, which
+     is the authenticated-app (dashboard) palette. */
+  --lp-bg: #0A0B0D;
+  --lp-bg-alt: #0E1116;
+  --lp-nav-bg: rgba(8, 9, 11, 0.85);
+  --lp-ink: #FFFFFF;
+  --lp-ink-dim: #9BA7B4;
+  --lp-ink-faint: #6B7684;
+  --lp-accent: #38D6E8;
+  --lp-accent-dim: #1A6B78;
+  --lp-hero-grad-start: #0C4A58;
+  --lp-hero-grad-end: #070B10;
+  --lp-border: rgba(255, 255, 255, 0.08);
+  --lp-cta-bg: #F2F4F6;
+  --lp-cta-ink: #0A0B0D;
+}
+
+/* ── Landing-page signal bar — the recurring gradient motif, see DESIGN.md ── */
+.lp-signal-bar {
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--lp-accent), #fff);
+}
+
+@layer base {
+  :root {
+    /* ANY.RUN-inspired dark navy palette — always used (dark class forced) */
+    --background: 212 72% 10%;
+    --foreground: 210 50% 90%;
+    --card: 212 62% 14%;
+    --card-foreground: 210 50% 90%;
+    --primary: 211 80% 44%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 212 55% 20%;
+    --secondary-foreground: 210 50% 90%;
+    --muted: 212 55% 18%;
+    --muted-foreground: 207 25% 57%;
+    --accent: 187 100% 42%;
+    --accent-foreground: 212 72% 10%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 212 45% 20%;
+    --input: 212 65% 12%;
+    --ring: 211 80% 44%;
+    --radius: 0.5rem;
+
+    --critical: 0 72% 51%;
+    --high: 25 95% 53%;
+    --medium: 45 93% 47%;
+    --low: 158 64% 52%;
+    --info: 187 100% 42%;
+  }
+
+  .dark {
+    --background: 212 72% 10%;
+    --foreground: 210 50% 90%;
+    --card: 212 62% 14%;
+    --card-foreground: 210 50% 90%;
+    --primary: 211 80% 44%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 212 55% 20%;
+    --secondary-foreground: 210 50% 90%;
+    --muted: 212 55% 18%;
+    --muted-foreground: 207 25% 57%;
+    --accent: 187 100% 42%;
+    --accent-foreground: 212 72% 10%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 212 45% 20%;
+    --input: 212 65% 12%;
+    --ring: 211 80% 44%;
+  }
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  background: var(--ar-bg);
+  color: hsl(var(--foreground));
+  font-family: 'Roboto', 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── World map background ── */
+.world-map-bg {
+  background-image: url('/world-map-bg.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ── Scan results empty-pane background (locally generated, not a stock photo) ── */
+.scan-empty-bg {
+  background-color: var(--ar-bg);
+  background-image: url('/world-map-bg.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* ── Scan line animation ── */
+@keyframes scanLine {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 0.6; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(600%); opacity: 0; }
+}
+.scan-line { animation: scanLine 3s ease-in-out infinite; }
+
+/* ── Cursor blink ── */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.cursor-blink::after {
+  content: '_';
+  animation: blink 1s infinite;
+  color: hsl(var(--accent));
+}
+
+/* ── Glow utilities ── */
+.glow-blue {
+  box-shadow: 0 0 20px rgba(23, 162, 232, 0.25), 0 0 40px rgba(23, 162, 232, 0.1);
+}
+.glow-teal {
+  box-shadow: 0 0 20px rgba(31, 184, 240, 0.2), 0 0 40px rgba(31, 184, 240, 0.08);
+}
+.glow-green {
+  box-shadow: 0 0 20px rgba(0, 137, 123, 0.25), 0 0 40px rgba(0, 137, 123, 0.1);
+}
+.glow-red {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.2), 0 0 40px rgba(239, 68, 68, 0.05);
+}
+.glow-orange {
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.2);
+}
+
+/* ── Severity badges ── */
+.severity-critical {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+.severity-high {
+  background: rgba(249, 115, 22, 0.15);
+  color: #f97316;
+  border: 1px solid rgba(249, 115, 22, 0.3);
+}
+.severity-medium {
+  background: rgba(234, 179, 8, 0.15);
+  color: #eab308;
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}
+.severity-low {
+  background: rgba(52, 211, 153, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(52, 211, 153, 0.3);
+}
+.severity-info {
+  background: rgba(31, 184, 240, 0.15);
+  color: var(--ar-cyan);
+  border: 1px solid rgba(31, 184, 240, 0.3);
+}
+
+/* ── Progress bar ── */
+.progress-glow {
+  background: linear-gradient(90deg, var(--ar-primary), var(--ar-accent));
+  box-shadow: 0 0 10px rgba(23, 162, 232, 0.5);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--ar-bg); }
+::-webkit-scrollbar-thumb { background: var(--ar-border); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ar-primary); }
+
+/* ── Drop zone ── */
+.drop-zone-active {
+  border-color: var(--ar-primary) !important;
+  background: rgba(23, 162, 232, 0.08) !important;
+  box-shadow: 0 0 0 3px rgba(23, 162, 232, 0.15),
+              inset 0 0 40px rgba(23, 162, 232, 0.04);
+}
+
+/* ── Fade animations ── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.animate-fade-in-up { animation: fadeInUp 0.4s ease-out forwards; }
+.animate-fade-in    { animation: fadeIn  0.3s ease-out forwards; }
+
+/* ── Stagger ── */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 80ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 160ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 320ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 400ms; }
+
+/* ── ANY.RUN-style active tab underline ── */
+.tab-active-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--ar-cyan);
+}

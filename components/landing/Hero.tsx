@@ -1,9 +1,11 @@
 "use client";
 
-import { motion, type Variants } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion, type Variants } from "framer-motion";
 import Link from "next/link";
 import { ShieldCheck, Play, ArrowRight } from "lucide-react";
 import SandboxPlanCard from "@/components/SandboxPlanCard";
+import ReportReadyCard from "@/components/ReportReadyCard";
 
 // A small tiled SVG of scattered "0"/"1" glyphs — the hero's binary-rain
 // texture from the Liberty reference, recreated rather than copied (see
@@ -36,7 +38,11 @@ const item: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 };
 
+const DEMO_FILE = "invoice_update_q3.exe";
+
 export default function Hero({ primaryHref, primaryLabel }: { primaryHref: string; primaryLabel: string }) {
+  const [showReport, setShowReport] = useState(false);
+
   return (
     <section className="relative overflow-hidden"
       style={{ background: `linear-gradient(135deg, var(--lp-hero-grad-start) 0%, var(--lp-hero-grad-end) 70%)` }}>
@@ -97,11 +103,21 @@ export default function Hero({ primaryHref, primaryLabel }: { primaryHref: strin
         <motion.div variants={item} className="relative flex-1 w-full flex justify-center lg:justify-end">
           <div className="absolute w-[380px] h-[380px] rounded-full pointer-events-none"
             style={{ background: "radial-gradient(circle, var(--lp-accent) 0%, transparent 72%)", opacity: 0.28, filter: "blur(10px)" }} />
-          <div className="relative">
-            <p className="text-[10px] uppercase tracking-[0.14em] mb-3 text-center" style={{ color: "var(--lp-ink-faint)" }}>
+          <div className="relative flex flex-col items-center gap-4">
+            <p className="text-[10px] uppercase tracking-[0.14em] text-center" style={{ color: "var(--lp-ink-faint)" }}>
               Live plan review
             </p>
-            <SandboxPlanCard fileName="invoice_update_q3.exe" autoPlay />
+            <SandboxPlanCard
+              fileName={DEMO_FILE}
+              autoPlay
+              onCycleComplete={() => {
+                setShowReport(true);
+                setTimeout(() => setShowReport(false), 2000);
+              }}
+            />
+            <AnimatePresence>
+              {showReport && <ReportReadyCard key="report" fileName={DEMO_FILE} />}
+            </AnimatePresence>
           </div>
         </motion.div>
       </motion.div>

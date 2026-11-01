@@ -58,8 +58,8 @@ const INITIAL_DECISIONS: Record<string, Decision> = {
   vt: "planned", execute: "planned", analyze: "planned", report: "planned",
 };
 
-export default function SandboxPlanCard({ fileName, onRun, onCancel, autoPlay = false }: {
-  fileName: string; onRun?: () => void; onCancel?: () => void; autoPlay?: boolean;
+export default function SandboxPlanCard({ fileName, onRun, onCancel, autoPlay = false, onCycleComplete }: {
+  fileName: string; onRun?: () => void; onCancel?: () => void; autoPlay?: boolean; onCycleComplete?: () => void;
 }) {
   const [decisions, setDecisions] = useState<Record<string, Decision>>(() => ({ ...INITIAL_DECISIONS }));
   const firstUndecided = STEPS.find((s) => decisions[s.key] === "planned")?.key ?? null;
@@ -86,11 +86,13 @@ export default function SandboxPlanCard({ fileName, onRun, onCancel, autoPlay = 
           await wait(1500);
         }
         if (cancelled) return;
+        onCycleComplete?.();
         await wait(2200);
       }
     })();
 
     return () => { cancelled = true; };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoPlay]);
 
   const decide = (key: string, decision: Decision) => {
@@ -141,8 +143,9 @@ export default function SandboxPlanCard({ fileName, onRun, onCancel, autoPlay = 
         {fileName}
       </div>
 
-      {/* Rows */}
-      <div className="px-2">
+      {/* Rows — fixed height so the card never resizes as a row expands;
+          overflow-y is a safety fallback, not the normal case. */}
+      <div className="px-2 overflow-y-auto [&::-webkit-scrollbar]:hidden" style={{ height: 480, scrollbarWidth: "none" }}>
         {STEPS.map((step, i) => {
           const decision = decisions[step.key];
           const isOpen = openKey === step.key;
